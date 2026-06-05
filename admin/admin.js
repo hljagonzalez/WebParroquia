@@ -6,7 +6,7 @@ async function comprobarSesion() {
   const { data: { session } } = await sb.auth.getSession();
   if (session) {
     document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('admin-dashboard').style.display = 'block';
+    document.getElementById('admin-dashboard').style.display = 'flex';
     document.getElementById('user-email').textContent = session.user.email || session.user.user_metadata?.user_name || '';
     await cargarTodo();
   } else {
@@ -113,10 +113,13 @@ function renderHorarios(data) {
 function htmlFilaHorario(sub, i, item) {
   const horas = (item.horas || []).join(', ');
   return `<div class="item-card" data-index="${i}">
-    <button class="admin-btn admin-btn-sm admin-btn-danger item-remove" onclick="eliminarHorario('${sub}',${i})">×</button>
+    <h4>Horario #${i + 1}</h4>
+    <button class="admin-btn admin-btn-sm admin-btn-danger item-remove" onclick="eliminarHorario('${sub}',${i})" title="Eliminar horario">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+    </button>
     <div class="form-row">
-      <div class="fg"><label>Día</label><input class="hor-dia" value="${esc(item.dia)}" onchange="actualizarHorario('${sub}',${i})" /></div>
-      <div class="fg"><label>Horas (separadas por coma)</label><input class="hor-horas" value="${esc(horas)}" onchange="actualizarHorario('${sub}',${i})" /></div>
+      <div class="fg"><label>Día</label><input class="hor-dia" value="${esc(item.dia)}" onchange="actualizarHorario('${sub}',${i})" placeholder="Ej: Lunes a Viernes, Domingos..." /></div>
+      <div class="fg"><label>Horas (separadas por coma)</label><input class="hor-horas" value="${esc(horas)}" onchange="actualizarHorario('${sub}',${i})" placeholder="Ej: 09:00, 19:30" /></div>
     </div>
   </div>`;
 }
@@ -200,9 +203,26 @@ function htmlItemCard(pref, campos, i, item) {
     return `<div class="fg"><label>${esc(c.label)}</label><input value="${esc(val)}" onchange="actualizarItem('${pref}',${i},'${esc(c.key)}',this.value)" /></div>`;
   }).join('');
 
+  let previewHtml = '';
+  if (pref === 'gal') {
+    const imgUrl = getPreviewUrl(item.imagen);
+    const fallbackSvg = "data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2250%22 viewBox=%220 0 80 50%22%3E%3Crect width=%2280%22 height=%2250%22 fill=%22%23e2e8f0%22/%3E%3Ctext x=%2250%25%22 y=%2255%25%22 font-size=%2216%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3E📷%3C/text%3E%3C/svg%3E";
+    const displaySrc = imgUrl || fallbackSvg;
+    previewHtml = `<div class="image-preview-container">
+      <img src="${esc(displaySrc)}" class="image-preview-thumbnail" onerror="this.src='${fallbackSvg}'; this.onerror=null;" alt="" />
+      <div class="image-preview-info">${imgUrl ? 'Vista previa de la imagen' : 'Introduce la ruta de la imagen para ver la miniatura'}</div>
+    </div>`;
+  }
+
   return `<div class="item-card" data-index="${i}">
-    <button class="admin-btn admin-btn-sm admin-btn-danger item-remove" onclick="eliminarItem('${pref}',${i})">×</button>
-    <div class="form-row">${fields}</div>
+    <h4>Elemento #${i + 1}</h4>
+    <button class="admin-btn admin-btn-sm admin-btn-danger item-remove" onclick="eliminarItem('${pref}',${i})" title="Eliminar elemento">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+    </button>
+    <div class="form-row">
+      ${fields}
+      ${previewHtml}
+    </div>
   </div>`;
 }
 
@@ -221,10 +241,39 @@ function eliminarItem(pref, i) {
   renderizar(seccion);
 }
 
+function getPreviewUrl(path) {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('/')) {
+    return path;
+  }
+  return '../' + path;
+}
+
 function actualizarItem(pref, i, key, val) {
   const seccion = mapearSeccion(pref);
   if (datosCache[seccion]?.items?.[i]) {
     datosCache[seccion].items[i][key] = val;
+    
+    // Live update image preview if image field changes in gallery
+    if (pref === 'gal' && key === 'imagen') {
+      const card = document.querySelector(`#section-galeria .item-card[data-index="${i}"]`);
+      if (card) {
+        const img = card.querySelector('.image-preview-thumbnail');
+        const info = card.querySelector('.image-preview-info');
+        const url = getPreviewUrl(val);
+        const fallbackSvg = "data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2250%22 viewBox=%220 0 80 50%22%3E%3Crect width=%2280%22 height=%2250%22 fill=%22%23e2e8f0%22/%3E%3Ctext x=%2250%25%22 y=%2255%25%22 font-size=%2216%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3E📷%3C/text%3E%3C/svg%3E";
+        if (img) {
+          img.src = url || fallbackSvg;
+          img.onerror = function() {
+            this.src = fallbackSvg;
+            this.onerror = null;
+          };
+          if (info) {
+            info.textContent = url ? 'Vista previa de la imagen' : 'Introduce la ruta de la imagen para ver la miniatura';
+          }
+        }
+      }
+    }
   }
 }
 

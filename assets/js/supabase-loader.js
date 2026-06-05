@@ -1,7 +1,7 @@
 const SUPABASE_URL = 'https://imrdjotdicpzkptosxrl.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImltcmRqb3RkaWNwemtwdG9zeHJsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NzMwMTUsImV4cCI6MjA5NjI0OTAxNX0.iYd0n_q-Wxk4ZkPzAlk5grpAJ59hIzOrYn81gAf5q1A';
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     autoRefreshToken: true,
     persistSession: true,
@@ -9,7 +9,7 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 });
 
 async function obtenerSeccion(seccion) {
-  const { data, error } = await supabase
+  const { data, error } = await sb
     .from('contenido')
     .select('datos')
     .eq('seccion', seccion)
@@ -19,7 +19,7 @@ async function obtenerSeccion(seccion) {
 }
 
 async function guardarSeccion(seccion, datos) {
-  const { error } = await supabase
+  const { error } = await sb
     .from('contenido')
     .update({ datos, updated_at: new Date().toISOString() })
     .eq('seccion', seccion);
@@ -27,7 +27,7 @@ async function guardarSeccion(seccion, datos) {
 }
 
 async function iniciarSesion() {
-  const { error } = await supabase.auth.signInWithOAuth({
+  const { error } = await sb.auth.signInWithOAuth({
     provider: 'github',
     options: { redirectTo: window.location.origin + window.location.pathname },
   });
@@ -35,6 +35,6 @@ async function iniciarSesion() {
 }
 
 function cerrarSesion() {
-  supabase.auth.signOut();
+  sb.auth.signOut();
   window.location.reload();
 }

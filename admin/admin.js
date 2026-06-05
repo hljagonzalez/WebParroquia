@@ -1,7 +1,7 @@
 let datosCache = {};
 
 async function comprobarSesion() {
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await     sb.auth.getSession();
   if (session) {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('admin-dashboard').style.display = 'block';
@@ -130,7 +130,7 @@ async function guardar(seccion) {
 
 document.addEventListener('DOMContentLoaded', async () => {
   comprobarSesion();
-  supabase.auth.onAuthStateChange((event) => {
+      sb.auth.onAuthStateChange((event) => {
     if (event === 'SIGNED_IN') comprobarSesion();
   });
 });

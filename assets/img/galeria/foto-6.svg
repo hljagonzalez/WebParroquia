@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Foto de ejemplo 6">
+  <rect width="800" height="600" fill="#4f9e87"/>
+  <circle cx="400" cy="280" r="120" fill="none" stroke="#f5f1e6" stroke-width="14"/>
+  <text x="400" y="520" font-family="Georgia, serif" font-size="34" fill="#f5f1e6" text-anchor="middle">Convivencia</text>
+</svg>

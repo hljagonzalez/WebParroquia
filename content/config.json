@@ -1,0 +1,19 @@
+{
+  "nombre": "Parroquia Santo Ángel Custodio",
+  "lema": "Una comunidad de fe, esperanza y caridad",
+  "descripcion": "Bienvenidos a la web de nuestra parroquia. Aquí encontrarás los horarios de misas, información sobre los sacramentos, nuestros grupos y las últimas noticias de la comunidad.",
+  "direccion": "Calle Mayor 1, 28001 Madrid",
+  "telefono": "+34 910 000 000",
+  "email": "info@santoangelcustodio.org",
+  "parroco": "Rvdo. P. Nombre Apellido",
+  "mapa": {
+    "lat": 40.4168,
+    "lng": -3.7038,
+    "zoom": 16
+  },
+  "redes": {
+    "facebook": "https://facebook.com/",
+    "instagram": "https://instagram.com/",
+    "youtube": "https://youtube.com/"
+  }
+}

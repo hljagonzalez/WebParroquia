@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Bienvenidos a la web de nuestra parroquia: horarios de misas, sacramentos, grupos y avisos." />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src https://www.openstreetmap.org; connect-src 'self'" />
+  <meta property="og:title" content="Inicio | Parroquia Santo Ángel Custodio" />
+  <meta property="og:description" content="Bienvenidos a la web de nuestra parroquia: horarios de misas, sacramentos, grupos y avisos." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Parroquia Santo Ángel Custodio" />
+  <meta property="og:url" content="https://parroquiasantoangelcustodio.org" />
+  <meta name="twitter:card" content="summary" />
+  <title>Inicio</title>
+  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script src="assets/js/partials.js" defer></script>
+  <script src="assets/js/render.js" defer></script>
+</head>
+<body data-page="inicio">
+  <div id="site-header"></div>
+
+  <main id="contenido">
+    <section class="hero">
+      <img class="hero-bg" src="assets/img/hero.svg" alt="" />
+      <div class="container hero-inner">
+        <h1 data-config="nombre">Parroquia San José</h1>
+        <p class="lema" data-config="lema">Una comunidad de fe, esperanza y caridad</p>
+        <div class="hero-acciones">
+          <a class="btn btn-primario" href="horarios.html">Horarios de misas</a>
+          <a class="btn btn-secundario" href="contacto.html">Cómo llegar</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="seccion">
+      <div class="container">
+        <div class="seccion-cabecera">
+          <h2>Bienvenidos</h2>
+          <p data-config="descripcion"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="seccion seccion-alt">
+      <div class="container">
+        <div class="seccion-cabecera">
+          <h2>Horario de misas</h2>
+          <p>Consulta los horarios habituales de nuestras celebraciones.</p>
+        </div>
+        <div id="proximas-misas" class="grid grid-3"><p class="cargando">Cargando horarios…</p></div>
+      </div>
+    </section>
+
+    <section class="seccion">
+      <div class="container">
+        <div class="seccion-cabecera">
+          <h2>Últimos avisos</h2>
+          <p>Lo más reciente de la vida parroquial.</p>
+        </div>
+        <div id="ultimos-avisos" class="grid grid-3"><p class="cargando">Cargando avisos…</p></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>

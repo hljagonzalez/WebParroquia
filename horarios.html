@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Horarios de misas, confesiones y adoración de la parroquia." />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src https://www.openstreetmap.org; connect-src 'self'" />
+  <meta property="og:title" content="Horarios | Parroquia Santo Ángel Custodio" />
+  <meta property="og:description" content="Horarios de misas, confesiones y adoración de la parroquia." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Parroquia Santo Ángel Custodio" />
+  <meta name="twitter:card" content="summary" />
+  <title>Horarios</title>
+  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script src="assets/js/partials.js" defer></script>
+  <script src="assets/js/render.js" defer></script>
+</head>
+<body data-page="horarios">
+  <div id="site-header"></div>
+
+  <main id="contenido">
+    <section class="page-hero">
+      <div class="container">
+        <h1>Horarios</h1>
+        <p>Misas, confesiones y adoración eucarística.</p>
+      </div>
+    </section>
+
+    <section class="seccion">
+      <div class="container">
+        <div class="horario-bloque">
+          <h3>Santas Misas</h3>
+          <div id="horarios-misas"><p class="cargando">Cargando…</p></div>
+        </div>
+
+        <div class="horario-bloque">
+          <h3>Confesiones</h3>
+          <div id="horarios-confesiones"><p class="cargando">Cargando…</p></div>
+        </div>
+
+        <div class="horario-bloque">
+          <h3>Adoración eucarística</h3>
+          <div id="horarios-adoracion"><p class="cargando">Cargando…</p></div>
+        </div>
+
+        <p id="horarios-nota" class="nota"></p>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>

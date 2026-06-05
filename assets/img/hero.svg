@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Imagen de bienvenida">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3b2f63"/>
+      <stop offset="100%" stop-color="#6b4f9e"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <circle cx="1250" cy="220" r="90" fill="#f5f1e6" opacity="0.85"/>
+  <g fill="#241d40" opacity="0.9">
+    <rect x="600" y="430" width="400" height="470"/>
+    <polygon points="600,430 800,300 1000,430"/>
+    <rect x="770" y="180" width="60" height="160"/>
+    <rect x="740" y="230" width="120" height="40"/>
+  </g>
+  <rect x="690" y="560" width="80" height="340" fill="#3b2f63"/>
+  <rect x="830" y="560" width="80" height="340" fill="#3b2f63"/>
+</svg>

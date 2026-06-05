@@ -1,0 +1,15 @@
+{
+  "misas": [
+    { "dia": "Lunes a viernes", "horas": ["09:00", "19:30"] },
+    { "dia": "Sábado", "horas": ["09:00", "19:30"] },
+    { "dia": "Domingo y festivos", "horas": ["10:00", "12:00", "13:00", "19:30"] }
+  ],
+  "confesiones": [
+    { "dia": "Lunes a viernes", "horas": ["19:00 - 19:25"] },
+    { "dia": "Sábado", "horas": ["18:30 - 19:25"] }
+  ],
+  "adoracion": [
+    { "dia": "Jueves", "horas": ["20:00 - 21:00"] }
+  ],
+  "nota": "Durante el verano y los periodos especiales (Semana Santa, Navidad) los horarios pueden variar. Consulta los avisos."
+}

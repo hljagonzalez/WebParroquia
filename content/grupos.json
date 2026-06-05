@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "nombre": "Catequesis de niños",
+      "horario": "Martes y miércoles, 17:30 - 18:30",
+      "descripcion": "Preparación para la Primera Comunión a lo largo de dos cursos.",
+      "contacto": "catequesis@santoangelcustodio.org"
+    },
+    {
+      "nombre": "Cáritas parroquial",
+      "horario": "Lunes y jueves, 10:00 - 12:00",
+      "descripcion": "Atención y acompañamiento a las personas más necesitadas de la comunidad.",
+      "contacto": "caritas@santoangelcustodio.org"
+    },
+    {
+      "nombre": "Coro parroquial",
+      "horario": "Viernes, 20:00 - 21:30",
+      "descripcion": "Animamos las celebraciones con el canto. Abierto a todas las edades.",
+      "contacto": "coro@santoangelcustodio.org"
+    },
+    {
+      "nombre": "Grupo de jóvenes",
+      "horario": "Sábados, 18:00",
+      "descripcion": "Encuentros de formación, oración y convivencia para adolescentes y jóvenes.",
+      "contacto": "jovenes@santoangelcustodio.org"
+    }
+  ]
+}

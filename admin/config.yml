@@ -1,0 +1,128 @@
+# Configuración del panel de edición (Decap CMS).
+#
+# LOGIN PENDIENTE DE ACTIVAR:
+#   1. Sustituye "usuario/repositorio" por tu repositorio real de GitHub.
+#   2. Configura un proxy OAuth de GitHub (ver README) y ajusta "base_url".
+#   3. Mientras pruebas en tu ordenador puedes usar el backend local
+#      (ver README, sección "Probar el panel en local").
+#
+backend:
+  name: github
+  repo: usuario/repositorio        # <-- CAMBIAR por "tu-usuario/tu-repo"
+  branch: main
+  # base_url: https://tu-proxy-oauth.workers.dev   # <-- proxy OAuth (ver README)
+
+# Permite editar en local con `npx decap-server` (ver README).
+local_backend: true
+
+media_folder: "assets/img/galeria"   # dónde se guardan las imágenes subidas
+public_folder: "assets/img/galeria"  # ruta pública de esas imágenes
+
+locale: "es"
+
+collections:
+  - name: "general"
+    label: "Datos de la parroquia"
+    files:
+      - name: "config"
+        label: "Información general"
+        file: "content/config.json"
+        fields:
+          - { name: "nombre", label: "Nombre de la parroquia", widget: "string" }
+          - { name: "lema", label: "Lema", widget: "string", required: false }
+          - { name: "descripcion", label: "Descripción de bienvenida", widget: "text" }
+          - { name: "direccion", label: "Dirección", widget: "string" }
+          - { name: "telefono", label: "Teléfono", widget: "string" }
+          - { name: "email", label: "Email", widget: "string" }
+          - { name: "parroco", label: "Párroco", widget: "string", required: false }
+          - name: "mapa"
+            label: "Ubicación en el mapa"
+            widget: "object"
+            fields:
+              - { name: "lat", label: "Latitud", widget: "number", value_type: "float" }
+              - { name: "lng", label: "Longitud", widget: "number", value_type: "float" }
+              - { name: "zoom", label: "Zoom", widget: "number", default: 16 }
+          - name: "redes"
+            label: "Redes sociales"
+            widget: "object"
+            fields:
+              - { name: "facebook", label: "Facebook", widget: "string", required: false }
+              - { name: "instagram", label: "Instagram", widget: "string", required: false }
+              - { name: "youtube", label: "YouTube", widget: "string", required: false }
+
+      - name: "horarios"
+        label: "Horarios"
+        file: "content/horarios.json"
+        fields:
+          - name: "misas"
+            label: "Misas"
+            widget: "list"
+            fields:
+              - { name: "dia", label: "Día", widget: "string" }
+              - { name: "horas", label: "Horas", widget: "list", field: { name: "hora", label: "Hora", widget: "string" } }
+          - name: "confesiones"
+            label: "Confesiones"
+            widget: "list"
+            fields:
+              - { name: "dia", label: "Día", widget: "string" }
+              - { name: "horas", label: "Horas", widget: "list", field: { name: "hora", label: "Hora", widget: "string" } }
+          - name: "adoracion"
+            label: "Adoración"
+            widget: "list"
+            required: false
+            fields:
+              - { name: "dia", label: "Día", widget: "string" }
+              - { name: "horas", label: "Horas", widget: "list", field: { name: "hora", label: "Hora", widget: "string" } }
+          - { name: "nota", label: "Nota", widget: "text", required: false }
+
+      - name: "sacramentos"
+        label: "Sacramentos"
+        file: "content/sacramentos.json"
+        fields:
+          - { name: "intro", label: "Introducción", widget: "text" }
+          - name: "items"
+            label: "Sacramentos"
+            widget: "list"
+            fields:
+              - { name: "nombre", label: "Nombre", widget: "string" }
+              - { name: "icono", label: "Icono (referencia)", widget: "string", required: false }
+              - { name: "descripcion", label: "Descripción", widget: "text" }
+              - { name: "requisitos", label: "Cómo prepararlo", widget: "text" }
+
+      - name: "grupos"
+        label: "Grupos y actividades"
+        file: "content/grupos.json"
+        fields:
+          - name: "items"
+            label: "Grupos"
+            widget: "list"
+            fields:
+              - { name: "nombre", label: "Nombre", widget: "string" }
+              - { name: "horario", label: "Horario", widget: "string" }
+              - { name: "descripcion", label: "Descripción", widget: "text" }
+              - { name: "contacto", label: "Email de contacto", widget: "string", required: false }
+
+      - name: "avisos"
+        label: "Avisos y noticias"
+        file: "content/avisos.json"
+        fields:
+          - name: "items"
+            label: "Avisos"
+            widget: "list"
+            fields:
+              - { name: "titulo", label: "Título", widget: "string" }
+              - { name: "fecha", label: "Fecha", widget: "date", format: "YYYY-MM-DD" }
+              - { name: "resumen", label: "Resumen", widget: "text" }
+              - { name: "cuerpo", label: "Texto completo", widget: "text", required: false }
+
+      - name: "galeria"
+        label: "Galería de fotos"
+        file: "content/galeria.json"
+        fields:
+          - name: "items"
+            label: "Fotos"
+            widget: "list"
+            fields:
+              - { name: "imagen", label: "Imagen", widget: "image" }
+              - { name: "titulo", label: "Título", widget: "string", required: false }
+              - { name: "descripcion", label: "Descripción", widget: "string", required: false }

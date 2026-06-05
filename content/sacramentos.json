@@ -1,0 +1,41 @@
+{
+  "intro": "Los sacramentos son signos eficaces de la gracia. Para preparar cualquiera de ellos, ponte en contacto con el despacho parroquial.",
+  "items": [
+    {
+      "nombre": "Bautismo",
+      "icono": "bautismo",
+      "descripcion": "Primera puerta de entrada a la vida cristiana. Los padres y padrinos participan en una preparación previa.",
+      "requisitos": "Solicitar cita en el despacho. Partida de nacimiento del niño. Los padrinos deben estar confirmados."
+    },
+    {
+      "nombre": "Primera Comunión",
+      "icono": "comunion",
+      "descripcion": "Los niños reciben por primera vez la Eucaristía tras dos cursos de catequesis.",
+      "requisitos": "Estar bautizado e inscribirse en la catequesis parroquial."
+    },
+    {
+      "nombre": "Confirmación",
+      "icono": "confirmacion",
+      "descripcion": "Sella y completa la gracia bautismal con el don del Espíritu Santo.",
+      "requisitos": "Itinerario de catequesis para jóvenes y adultos."
+    },
+    {
+      "nombre": "Matrimonio",
+      "icono": "matrimonio",
+      "descripcion": "La alianza por la que un hombre y una mujer constituyen una comunidad de vida y amor.",
+      "requisitos": "Reservar fecha con al menos 6 meses de antelación y realizar el cursillo prematrimonial."
+    },
+    {
+      "nombre": "Unción de enfermos",
+      "icono": "uncion",
+      "descripcion": "Acompaña a los fieles que se encuentran enfermos o de edad avanzada.",
+      "requisitos": "Avisar al despacho o llamar por teléfono en cualquier momento."
+    },
+    {
+      "nombre": "Reconciliación",
+      "icono": "reconciliacion",
+      "descripcion": "El sacramento del perdón y la conversión. Consulta los horarios de confesión.",
+      "requisitos": "Acudir en los horarios indicados o solicitar una cita."
+    }
+  ]
+}

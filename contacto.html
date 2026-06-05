@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Contacto y ubicación de la parroquia: dirección, teléfono, email y mapa." />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src https://www.openstreetmap.org; connect-src 'self'" />
+  <meta property="og:title" content="Contacto | Parroquia Santo Ángel Custodio" />
+  <meta property="og:description" content="Contacto y ubicación de la parroquia: dirección, teléfono, email y mapa." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Parroquia Santo Ángel Custodio" />
+  <meta name="twitter:card" content="summary" />
+  <title>Contacto</title>
+  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script src="assets/js/partials.js" defer></script>
+  <script src="assets/js/render.js" defer></script>
+</head>
+<body data-page="contacto">
+  <div id="site-header"></div>
+
+  <main id="contenido">
+    <section class="page-hero">
+      <div class="container">
+        <h1>Contacto</h1>
+        <p>Estamos a tu disposición. Te esperamos.</p>
+      </div>
+    </section>
+
+    <section class="seccion">
+      <div class="container contacto-grid">
+        <div>
+          <h2>Datos de contacto</h2>
+          <ul class="contacto-datos" style="list-style:none;padding:0">
+            <li><strong>Párroco:</strong> <span data-config="parroco"></span></li>
+            <li><strong>Dirección:</strong> <span data-config="direccion"></span></li>
+            <li><strong>Teléfono:</strong> <a data-config-href="tel" data-config="telefono"></a></li>
+            <li><strong>Email:</strong> <a data-config-href="mailto" data-config="email"></a></li>
+          </ul>
+          <p><a id="mapa-enlace" class="btn btn-primario" href="#" target="_blank" rel="noopener">Abrir en el mapa</a></p>
+        </div>
+        <div>
+          <h2>Cómo llegar</h2>
+          <div id="mapa" class="mapa-wrap"><p class="cargando">Cargando mapa…</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>

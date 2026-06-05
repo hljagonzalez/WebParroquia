@@ -1,0 +1,10 @@
+{
+  "items": [
+    { "imagen": "assets/img/galeria/foto-1.svg", "titulo": "Fachada del templo", "descripcion": "Vista exterior de nuestra parroquia." },
+    { "imagen": "assets/img/galeria/foto-2.svg", "titulo": "Altar mayor", "descripcion": "El presbiterio durante una celebración." },
+    { "imagen": "assets/img/galeria/foto-3.svg", "titulo": "Primera Comunión", "descripcion": "Celebración con los niños de catequesis." },
+    { "imagen": "assets/img/galeria/foto-4.svg", "titulo": "Procesión", "descripcion": "Salida procesional de la comunidad." },
+    { "imagen": "assets/img/galeria/foto-5.svg", "titulo": "Coro parroquial", "descripcion": "El coro animando la liturgia." },
+    { "imagen": "assets/img/galeria/foto-6.svg", "titulo": "Convivencia", "descripcion": "Encuentro de los grupos parroquiales." }
+  ]
+}

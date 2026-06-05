@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "titulo": "Comienzo de la catequesis",
+      "fecha": "2026-09-15",
+      "resumen": "Abrimos las inscripciones para el nuevo curso de catequesis de niños.",
+      "cuerpo": "Las inscripciones para la catequesis de Primera Comunión se realizarán en el despacho parroquial del 1 al 20 de septiembre, en horario de tarde. Es necesario presentar la partida de bautismo del niño."
+    },
+    {
+      "titulo": "Campaña de Cáritas",
+      "fecha": "2026-08-20",
+      "resumen": "Recogida de alimentos no perecederos durante todo el mes.",
+      "cuerpo": "Cáritas parroquial organiza una recogida de alimentos no perecederos para las familias más necesitadas. Puedes dejar tus donativos en la entrada del templo durante los horarios de misa."
+    },
+    {
+      "titulo": "Horario de verano",
+      "fecha": "2026-07-01",
+      "resumen": "Durante julio y agosto las misas de tarde se adelantan a las 20:00.",
+      "cuerpo": "Os recordamos que durante los meses de verano la misa vespertina pasa a celebrarse a las 20:00 horas. El resto de horarios se mantienen sin cambios."
+    }
+  ]
+}

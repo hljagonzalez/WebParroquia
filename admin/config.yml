@@ -1,16 +1,9 @@
-# Configuración del panel de edición (Decap CMS).
-#
-# LOGIN PENDIENTE DE ACTIVAR:
-#   1. Sustituye "usuario/repositorio" por tu repositorio real de GitHub.
-#   2. Configura un proxy OAuth de GitHub (ver README) y ajusta "base_url".
-#   3. Mientras pruebas en tu ordenador puedes usar el backend local
-#      (ver README, sección "Probar el panel en local").
-#
 backend:
   name: github
-  repo: usuario/repositorio        # <-- CAMBIAR por "tu-usuario/tu-repo"
+  repo: hljagonzalez/WebParroquia
   branch: main
-  # base_url: https://tu-proxy-oauth.workers.dev   # <-- proxy OAuth (ver README)
+  base_url: https://parroquia-proxy.jgongar553.workers.dev
+  auth_endpoint: /auth
 
 # Permite editar en local con `npx decap-server` (ver README).
 local_backend: true

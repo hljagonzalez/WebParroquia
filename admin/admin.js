@@ -50,10 +50,10 @@ function renderizar(seccion) {
   const data = datosCache[seccion] || {};
   if (seccion === 'config') renderConfig(data);
   else if (seccion === 'horarios') renderHorarios(data);
-  else if (seccion === 'sacramentos') renderItems('sac', data.items || [], ['nombre', 'icono', 'descripcion', 'requisitos'], data.intro);
-  else if (seccion === 'grupos') renderItems('gru', data.items || [], ['nombre', 'horario', 'descripcion', 'contacto']);
-  else if (seccion === 'avisos') renderItems('avi', data.items || [], ['titulo', 'fecha', 'resumen', 'cuerpo']);
-  else if (seccion === 'galeria') renderItems('gal', data.items || [], ['imagen', 'titulo', 'descripcion']);
+  else if (seccion === 'sacramentos') renderItems('sac', data.items || [], CAMPOS_ITEMS.sac, data.intro);
+  else if (seccion === 'grupos') renderItems('gru', data.items || [], CAMPOS_ITEMS.gru);
+  else if (seccion === 'avisos') renderItems('avi', data.items || [], CAMPOS_ITEMS.avi);
+  else if (seccion === 'galeria') renderItems('gal', data.items || [], CAMPOS_ITEMS.gal);
 }
 
 // ─── Config ────────────────────────────────

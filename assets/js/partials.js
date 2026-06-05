@@ -85,13 +85,20 @@ async function init() {
   marcarActivo();
 
   try {
-    const resp = await fetch("content/config.json", { cache: "no-cache" });
-    if (!resp.ok) throw new Error(resp.status);
-    const config = await resp.json();
+    const config = await obtenerSeccion("config");
     window.PARROQUIA_CONFIG = config;
     rellenarConfig(config);
   } catch (e) {
-    console.error("No se pudo cargar config.json", e);
+    console.error("No se pudo cargar config desde Supabase", e);
+    try {
+      const resp = await fetch("content/config.json", { cache: "no-cache" });
+      if (!resp.ok) throw new Error(resp.status);
+      const config = await resp.json();
+      window.PARROQUIA_CONFIG = config;
+      rellenarConfig(config);
+    } catch (e2) {
+      console.error("No se pudo cargar config.json", e2);
+    }
   }
 
   document.dispatchEvent(new CustomEvent("parroquia:listo"));

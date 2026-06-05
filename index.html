@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Bienvenidos a la web de nuestra parroquia: horarios de misas, sacramentos, grupos y avisos." />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src https://www.openstreetmap.org; connect-src 'self'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src https://www.openstreetmap.org; connect-src 'self' https://imrdjotdicpzkptosxrl.supabase.co https://api.github.com" />
   <meta property="og:title" content="Inicio | Parroquia Santo Ángel Custodio" />
   <meta property="og:description" content="Bienvenidos a la web de nuestra parroquia: horarios de misas, sacramentos, grupos y avisos." />
   <meta property="og:type" content="website" />
@@ -14,6 +14,8 @@
   <title>Inicio</title>
   <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <script src="https://unpkg.com/@supabase/supabase-js@2" defer></script>
+  <script src="assets/js/supabase-loader.js" defer></script>
   <script src="assets/js/partials.js" defer></script>
   <script src="assets/js/render.js" defer></script>
 </head>

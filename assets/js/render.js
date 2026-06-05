@@ -61,7 +61,7 @@ async function renderHorarios() {
     document.getElementById("horarios-misas") || document.getElementById("proximas-misas");
   if (!necesita) return;
   try {
-    const data = await obtenerJSON("content/horarios.json");
+    const data = typeof obtenerSeccion === "function" ? await obtenerSeccion("horarios") : await obtenerJSON("content/horarios.json");
 
     const misas = document.getElementById("horarios-misas");
     if (misas) misas.innerHTML = tablaHorario(data.misas, "Horario de misas");
@@ -98,7 +98,7 @@ async function renderSacramentos() {
   const cont = document.getElementById("sacramentos-lista");
   if (!cont) return;
   try {
-    const data = await obtenerJSON("content/sacramentos.json");
+    const data = typeof obtenerSeccion === "function" ? await obtenerSeccion("sacramentos") : await obtenerJSON("content/sacramentos.json");
     const intro = document.getElementById("sacramentos-intro");
     if (intro && data.intro) intro.textContent = data.intro;
     cont.innerHTML = data.items
@@ -126,7 +126,7 @@ async function renderAvisos() {
   const ultimos = document.getElementById("ultimos-avisos");
   if (!lista && !ultimos) return;
   try {
-    const data = await obtenerJSON("content/avisos.json");
+    const data = typeof obtenerSeccion === "function" ? await obtenerSeccion("avisos") : await obtenerJSON("content/avisos.json");
     const items = (data.items || []).slice().sort((a, b) => (a.fecha < b.fecha ? 1 : -1));
 
     if (lista) {
@@ -170,7 +170,7 @@ async function renderGrupos() {
   const cont = document.getElementById("grupos-lista");
   if (!cont) return;
   try {
-    const data = await obtenerJSON("content/grupos.json");
+    const data = typeof obtenerSeccion === "function" ? await obtenerSeccion("grupos") : await obtenerJSON("content/grupos.json");
     cont.innerHTML = data.items
       .map(
         (g) =>
@@ -221,7 +221,7 @@ async function renderGaleria() {
   const cont = document.getElementById("galeria-lista");
   if (!cont) return;
   try {
-    const data = await obtenerJSON("content/galeria.json");
+    const data = typeof obtenerSeccion === "function" ? await obtenerSeccion("galeria") : await obtenerJSON("content/galeria.json");
     cont.innerHTML = data.items
       .map(
         (f, i) =>

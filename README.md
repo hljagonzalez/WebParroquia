@@ -1,6 +1,6 @@
 # Web de la Parroquia
 
-Sitio web **estático** (HTML + CSS + JavaScript, sin framework ni compilación) pensado para publicarse gratis en **GitHub Pages**. El contenido que cambia (horarios, avisos, grupos, galería y datos de contacto) vive en archivos dentro de la carpeta `content/`, y la web los carga y muestra automáticamente.
+Sitio web **estático** (HTML + CSS + JavaScript, sin framework ni compilación) pensado para publicarse gratis en **GitHub Pages**. El contenido se gestiona a través de **Supabase** (base de datos en la nube) con un panel de administración propio, y se carga dinámicamente en cada página.
 
 ## Estructura del proyecto
 
@@ -13,64 +13,57 @@ Sitio web **estático** (HTML + CSS + JavaScript, sin framework ni compilación)
 ├── grupos.html             # Grupos y actividades
 ├── galeria.html            # Galería de fotos
 ├── contacto.html           # Contacto y mapa
-├── content/                # CONTENIDO EDITABLE
-│   ├── config.json         #   datos generales (nombre, dirección, mapa, redes…)
-│   ├── horarios.json       #   horarios de misas y confesiones
-│   ├── sacramentos.json    #   textos de cada sacramento
-│   ├── grupos.json         #   grupos y actividades
-│   ├── avisos.json         #   avisos / noticias
-│   └── galeria.json        #   fotos de la galería
+├── content/                # CONTENIDO EDITABLE (fallback local)
+│   ├── config.json         #   datos generales (copia local)
+│   ├── horarios.json       #   horarios (copia local)
+│   ├── sacramentos.json    #   textos (copia local)
+│   ├── grupos.json         #   grupos (copia local)
+│   ├── avisos.json         #   avisos (copia local)
+│   └── galeria.json        #   fotos (copia local)
 ├── assets/
 │   ├── css/styles.css      # estilos
+│   ├── js/supabase-loader.js  # cliente Supabase (obtener/guardar secciones)
 │   ├── js/partials.js      # carga cabecera/pie y datos generales
 │   ├── js/render.js        # pinta el contenido de cada página
 │   ├── partials/           # cabecera y pie comunes
 │   └── img/                # imágenes (logo, hero y galería)
-├── admin/                  # panel de edición (Decap CMS) — login pendiente
+├── admin/                  # panel de edición propio (con Supabase)
 │   ├── index.html
-│   └── config.yml
+│   └── admin.js
 └── .nojekyll               # evita el procesado Jekyll de GitHub Pages
 ```
 
-## Cómo editar el contenido
+## Cómo se gestiona el contenido
 
-Tienes dos formas:
+El contenido ya **no se edita directamente en los archivos JSON** de `content/`. La fuente principal de datos es **Supabase**. Los archivos `content/*.json` se mantienen como respaldo local por si la conexión falla.
 
-### A) Editando los archivos de `content/` (sin panel)
+### Con el panel de administración (recomendado)
 
-Abre el archivo que quieras dentro de `content/` y cambia los textos. Son archivos de texto sencillos (formato JSON). Reglas básicas:
+Entra en `/admin/` desde la web publicada o desde `http://localhost:8000/admin/` en local e inicia sesión con tu cuenta de GitHub. El panel permite editar:
 
-- Respeta las comillas `"` y las comas `,`.
-- Las horas y los días son simples textos: `"19:30"`, `"Domingo"`.
-- Las fechas de los avisos van en formato `AAAA-MM-DD`, por ejemplo `"2026-09-15"`.
+- **General**: nombre, lema, descripción, dirección, teléfono, email, párroco, mapa y redes sociales.
+- **Horarios**: misas, confesiones y adoración.
+- **Sacramentos**: descripción y requisitos de cada sacramento.
+- **Grupos**: nombre, horario, descripción y email de contacto.
+- **Avisos**: noticias ordenadas por fecha.
+- **Galería**: imágenes con título y descripción.
 
-Por ejemplo, para añadir un aviso edita `content/avisos.json` y añade un bloque dentro de `items`:
+Los cambios se guardan directamente en Supabase y la web los refleja al recargar.
 
-```json
-{
-  "titulo": "Título del aviso",
-  "fecha": "2026-10-01",
-  "resumen": "Texto corto que aparece en la portada.",
-  "cuerpo": "Texto completo que se muestra en la página de avisos."
-}
-```
+### Editando los JSON locales (sin panel)
 
-Para añadir fotos a la galería, copia la imagen en `assets/img/galeria/` y añade una entrada en `content/galeria.json`.
-
-### B) Con el panel de edición (Decap CMS)
-
-El panel está preparado en la carpeta `admin/` pero **el login todavía no está activado** (ver la siguiente sección).
+Si prefieres editar localmente, los archivos `content/*.json` siguen funcionando como fallback. El proyecto primero intenta cargar desde Supabase y, si no puede, usa el JSON local.
 
 ## Ver la web en tu ordenador
 
-Como el sitio carga archivos con `fetch`, **no basta con abrir el HTML con doble clic**: hay que servirlo con un pequeño servidor local. Con Python (ya instalado en macOS):
+El sitio carga archivos con `fetch`, así que **no basta con abrir el HTML con doble clic**. Necesitas un servidor local:
 
 ```bash
 cd WebParroquia
 python3 -m http.server 8000
 ```
 
-Y abre `http://localhost:8000` en el navegador.
+Abre `http://localhost:8000` en el navegador.
 
 ## Publicar en GitHub Pages
 
@@ -82,35 +75,13 @@ Y abre `http://localhost:8000` en el navegador.
 
 > El archivo `.nojekyll` ya está incluido para que GitHub Pages sirva las carpetas tal cual.
 
-## Activar el panel de edición (login del CMS)
+## Requisitos de Supabase
 
-El panel (`/admin`) usa **Decap CMS** con el backend de GitHub. Para que el login funcione en GitHub Pages necesitas:
+El proyecto necesita una base de datos Supabase con una tabla `contenido` que tenga las columnas `seccion` (text, primary key) y `datos` (jsonb). Las secciones son: `config`, `horarios`, `sacramentos`, `grupos`, `avisos` y `galeria`.
 
-1. **Indicar tu repositorio** en `admin/config.yml`:
-   ```yaml
-   backend:
-     name: github
-     repo: TU-USUARIO/NOMBRE-DEL-REPO
-     branch: main
-     base_url: https://TU-PROXY-OAUTH   # del paso 3
-   ```
-2. **Crear una OAuth App en GitHub**: *Settings → Developer settings → OAuth Apps → New OAuth App*. Anota el *Client ID* y el *Client Secret*.
-3. **Desplegar un proxy OAuth** (GitHub no permite el login directo desde un sitio estático). La opción gratuita más habitual es un *Cloudflare Worker*; busca **"decap-cms github oauth cloudflare worker"** y sigue la guía: desplegarás un pequeño servicio con tu *Client ID/Secret* y obtendrás una URL que pondrás en `base_url`.
-4. Una vez hecho, entra en `https://TU-USUARIO.github.io/NOMBRE-DEL-REPO/admin/` y pulsa **Login with GitHub**.
+El login del panel usa el proveedor **GitHub** configurado en Authentication de Supabase.
 
-### Probar el panel en local (sin proxy)
-
-Para editar en tu ordenador sin configurar nada de lo anterior, `local_backend: true` ya está activado en `admin/config.yml`. En dos terminales:
-
-```bash
-# terminal 1: proxy local de Decap
-npx decap-server
-
-# terminal 2: servidor del sitio
-python3 -m http.server 8000
-```
-
-Abre `http://localhost:8000/admin/`. Los cambios se guardarán directamente en los archivos de `content/`.
+Las credenciales (URL y anon key) están en `assets/js/supabase-loader.js`. Si cambias de proyecto Supabase, actualiza las constantes `SUPABASE_URL` y `SUPABASE_ANON_KEY`.
 
 ## Personalizar el diseño
 
@@ -120,4 +91,4 @@ Abre `http://localhost:8000/admin/`. Los cambios se guardarán directamente en l
 
 ## Secciones incluidas
 
-Inicio, Horarios, Sacramentos, Avisos, Grupos, Galería y Contacto. Pendientes para el futuro (no incluidas): donativos, historia del templo, buscador y varios idiomas.
+Inicio, Horarios, Sacramentos, Avisos, Grupos, Galería y Contacto.

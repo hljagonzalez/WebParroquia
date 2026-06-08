@@ -31,6 +31,14 @@ function activarMenu() {
   );
 }
 
+function escUrl(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 function marcarActivo() {
   const actual = document.body.getAttribute("data-page");
   if (!actual) return;
@@ -55,11 +63,12 @@ function rellenarConfig(config) {
   const social = document.querySelector("[data-social]");
   if (social && config.redes) {
     const nombres = { facebook: "Facebook", instagram: "Instagram", youtube: "YouTube" };
+    const validUrl = (url) => /^https:\/\/.+/.test(url);
     social.innerHTML = Object.entries(config.redes)
-      .filter(([, url]) => url)
+      .filter(([, url]) => url && validUrl(url))
       .map(
         ([red, url]) =>
-          '<li><a href="' + url + '" target="_blank" rel="noopener">' +
+          '<li><a href="' + escUrl(url) + '" target="_blank" rel="noopener">' +
           (nombres[red] || red) +
           "</a></li>"
       )

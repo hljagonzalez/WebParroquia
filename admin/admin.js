@@ -105,23 +105,63 @@ function renderHorarios(data) {
     const arr = data[sub] || [];
     const container = document.getElementById('hor-' + sub + '-container');
     if (!container) continue;
-    container.innerHTML = arr.map((item, i) => htmlFilaHorario(sub, i, item)).join('');
+    container.innerHTML = '';
+    arr.forEach((item, i) => {
+      const card = crearFilaHorarioDOM(sub, i, item);
+      container.appendChild(card);
+    });
   }
-  document.getElementById('hor-nota').value = data.nota || '';
+  const notaEl = document.getElementById('hor-nota');
+  if (notaEl) notaEl.value = data.nota || '';
 }
 
-function htmlFilaHorario(sub, i, item) {
+function crearFilaHorarioDOM(sub, i, item) {
   const horas = (item.horas || []).join(', ');
-  return `<div class="item-card" data-index="${i}">
-    <h4>Horario #${i + 1}</h4>
-    <button class="admin-btn admin-btn-sm admin-btn-danger item-remove" onclick="eliminarHorario('${sub}',${i})" title="Eliminar horario">
-      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-    </button>
-    <div class="form-row">
-      <div class="fg"><label>Día</label><input class="hor-dia" value="${esc(item.dia)}" onchange="actualizarHorario('${sub}',${i})" placeholder="Ej: Lunes a Viernes, Domingos..." /></div>
-      <div class="fg"><label>Horas (separadas por coma)</label><input class="hor-horas" value="${esc(horas)}" onchange="actualizarHorario('${sub}',${i})" placeholder="Ej: 09:00, 19:30" /></div>
-    </div>
-  </div>`;
+  const card = document.createElement('div');
+  card.className = 'item-card';
+  card.dataset.index = i;
+  card.dataset.sub = sub;
+
+  const h4 = document.createElement('h4');
+  h4.textContent = 'Horario #' + (i + 1);
+  card.appendChild(h4);
+
+  const removeBtn = document.createElement('button');
+  removeBtn.className = 'admin-btn admin-btn-sm admin-btn-danger item-remove';
+  removeBtn.title = 'Eliminar horario';
+  removeBtn.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>';
+  removeBtn.addEventListener('click', () => eliminarHorario(sub, i));
+  card.appendChild(removeBtn);
+
+  const formRow = document.createElement('div');
+  formRow.className = 'form-row';
+
+  const diaDiv = document.createElement('div');
+  diaDiv.className = 'fg';
+  const diaLabel = document.createElement('label');
+  diaLabel.textContent = 'Día';
+  const diaInput = document.createElement('input');
+  diaInput.className = 'hor-dia';
+  diaInput.value = item.dia || '';
+  diaInput.addEventListener('input', () => actualizarHorario(sub, i));
+  diaDiv.appendChild(diaLabel);
+  diaDiv.appendChild(diaInput);
+  formRow.appendChild(diaDiv);
+
+  const horasDiv = document.createElement('div');
+  horasDiv.className = 'fg';
+  const horasLabel = document.createElement('label');
+  horasLabel.textContent = 'Horas (separadas por coma)';
+  const horasInput = document.createElement('input');
+  horasInput.className = 'hor-horas';
+  horasInput.value = horas;
+  horasInput.addEventListener('input', () => actualizarHorario(sub, i));
+  horasDiv.appendChild(horasLabel);
+  horasDiv.appendChild(horasInput);
+  formRow.appendChild(horasDiv);
+
+  card.appendChild(formRow);
+  return card;
 }
 
 function agregarHorario(sub) {
@@ -149,7 +189,8 @@ function recogerHorarios() {
   for (const sub of ['misas', 'confesiones', 'adoracion']) {
     data[sub] = datosCache.horarios[sub] || [];
   }
-  data.nota = document.getElementById('hor-nota')?.value || '';
+  const notaEl = document.getElementById('hor-nota');
+  data.nota = notaEl?.value || '';
   return data;
 }
 
@@ -188,42 +229,91 @@ function renderItems(pref, items, campos, intro) {
   }
   const container = document.getElementById(pref + '-items-container');
   if (!container) return;
-  container.innerHTML = items.map((item, i) => htmlItemCard(pref, campos, i, item)).join('');
+  container.innerHTML = '';
+  items.forEach((item, i) => {
+    const card = crearItemCardDOM(pref, campos, i, item);
+    container.appendChild(card);
+  });
 }
 
-function htmlItemCard(pref, campos, i, item) {
-  const fields = campos.map(c => {
-    const val = item[c.key] || '';
-    if (c.tipo === 'textarea') {
-      return `<div class="fg full"><label>${esc(c.label)}</label><textarea onchange="actualizarItem('${pref}',${i},'${esc(c.key)}',this.value)">${esc(val)}</textarea></div>`;
-    }
-    if (c.tipo === 'date') {
-      return `<div class="fg"><label>${esc(c.label)}</label><input type="date" value="${esc(val)}" onchange="actualizarItem('${pref}',${i},'${esc(c.key)}',this.value)" /></div>`;
-    }
-    return `<div class="fg"><label>${esc(c.label)}</label><input value="${esc(val)}" onchange="actualizarItem('${pref}',${i},'${esc(c.key)}',this.value)" /></div>`;
-  }).join('');
+function crearItemCardDOM(pref, campos, i, item) {
+  const card = document.createElement('div');
+  card.className = 'item-card';
+  card.dataset.index = i;
+  card.dataset.pref = pref;
 
-  let previewHtml = '';
+  const h4 = document.createElement('h4');
+  h4.textContent = 'Elemento #' + (i + 1);
+  card.appendChild(h4);
+
+  const removeBtn = document.createElement('button');
+  removeBtn.className = 'admin-btn admin-btn-sm admin-btn-danger item-remove';
+  removeBtn.title = 'Eliminar elemento';
+  removeBtn.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>';
+  removeBtn.addEventListener('click', () => eliminarItem(pref, i));
+  card.appendChild(removeBtn);
+
+  const formRow = document.createElement('div');
+  formRow.className = 'form-row';
+
+  campos.forEach(c => {
+    const val = item[c.key] || '';
+    const fg = document.createElement('div');
+    fg.className = 'fg';
+    if (c.tipo === 'textarea') fg.classList.add('full');
+
+    const label = document.createElement('label');
+    label.textContent = c.label;
+    fg.appendChild(label);
+
+    let input;
+    if (c.tipo === 'textarea') {
+      input = document.createElement('textarea');
+      input.textContent = val;
+      input.addEventListener('input', () => actualizarItem(pref, i, c.key, input.value));
+    } else if (c.tipo === 'date') {
+      input = document.createElement('input');
+      input.type = 'date';
+      input.value = val;
+      input.addEventListener('input', () => actualizarItem(pref, i, c.key, input.value));
+    } else {
+      input = document.createElement('input');
+      input.value = val;
+      input.addEventListener('input', () => actualizarItem(pref, i, c.key, input.value));
+    }
+    fg.appendChild(input);
+    formRow.appendChild(fg);
+  });
+
+  let previewHtml = null;
   if (pref === 'gal') {
     const imgUrl = getPreviewUrl(item.imagen);
     const fallbackSvg = "data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2250%22 viewBox=%220 0 80 50%22%3E%3Crect width=%2280%22 height=%2250%22 fill=%22%23e2e8f0%22/%3E%3Ctext x=%2250%25%22 y=%2255%25%22 font-size=%2216%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3E📷%3C/text%3E%3C/svg%3E";
     const displaySrc = imgUrl || fallbackSvg;
-    previewHtml = `<div class="image-preview-container">
-      <img src="${esc(displaySrc)}" class="image-preview-thumbnail" onerror="this.src='${fallbackSvg}'; this.onerror=null;" alt="" />
-      <div class="image-preview-info">${imgUrl ? 'Vista previa de la imagen' : 'Introduce la ruta de la imagen para ver la miniatura'}</div>
-    </div>`;
+
+    const previewContainer = document.createElement('div');
+    previewContainer.className = 'image-preview-container';
+    previewContainer.style.gridColumn = '1 / -1';
+
+    const img = document.createElement('img');
+    img.src = displaySrc;
+    img.className = 'image-preview-thumbnail';
+    img.alt = '';
+    img.onerror = function() { this.src = fallbackSvg; this.onerror = null; };
+
+    const info = document.createElement('div');
+    info.className = 'image-preview-info';
+    info.textContent = imgUrl ? 'Vista previa de la imagen' : 'Introduce la ruta de la imagen para ver la miniatura';
+
+    previewContainer.appendChild(img);
+    previewContainer.appendChild(info);
+    previewHtml = { img, info, imgUrl, fallbackSvg };
   }
 
-  return `<div class="item-card" data-index="${i}">
-    <h4>Elemento #${i + 1}</h4>
-    <button class="admin-btn admin-btn-sm admin-btn-danger item-remove" onclick="eliminarItem('${pref}',${i})" title="Eliminar elemento">
-      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-    </button>
-    <div class="form-row">
-      ${fields}
-      ${previewHtml}
-    </div>
-  </div>`;
+  card.appendChild(formRow);
+  if (previewHtml) card.appendChild(previewHtml.img.parentElement);
+
+  return card;
 }
 
 function agregarItem(pref) {
@@ -253,10 +343,11 @@ function actualizarItem(pref, i, key, val) {
   const seccion = mapearSeccion(pref);
   if (datosCache[seccion]?.items?.[i]) {
     datosCache[seccion].items[i][key] = val;
-    
+
     // Live update image preview if image field changes in gallery
     if (pref === 'gal' && key === 'imagen') {
-      const card = document.querySelector(`#section-galeria .item-card[data-index="${i}"]`);
+      const container = document.querySelector(`#section-galeria #gal-items-container`);
+      const card = container?.children[i];
       if (card) {
         const img = card.querySelector('.image-preview-thumbnail');
         const info = card.querySelector('.image-preview-info');
@@ -296,7 +387,20 @@ function recogerFormulario(seccion) {
 
 // ─── Guardar ───────────────────────────────
 
+let guardando = false;
+
 async function guardar(seccion) {
+  if (guardando) return;
+  guardando = true;
+  // Double-check authentication before any write operation
+  const { data: { session }, error: sessionError } = await sb.auth.getSession();
+  if (sessionError || !session) {
+    mostrarNotificacion('Sesión expirada. Por favor, inicia sesión de nuevo.', 'error');
+    sb.auth.signOut();
+    window.location.reload();
+    return;
+  }
+
   const data = recogerFormulario(seccion);
   const btn = document.querySelector(`[data-guardar="${seccion}"]`);
   if (btn) { btn.disabled = true; btn.textContent = 'Guardando…'; }
@@ -309,14 +413,47 @@ async function guardar(seccion) {
       setTimeout(() => { btn.textContent = 'Guardar cambios'; btn.classList.remove('admin-btn-success'); btn.disabled = false; }, 2000);
     }
   } catch (e) {
-    alert('Error: ' + e.message);
+    mostrarNotificacion('Error: ' + e.message, 'error');
     if (btn) { btn.textContent = 'Guardar cambios'; btn.disabled = false; }
+  } finally {
+    guardando = false;
   }
+}
+
+function mostrarNotificacion(mensaje, tipo) {
+  let notif = document.getElementById('admin-notification');
+  if (!notif) {
+    notif = document.createElement('div');
+    notif.id = 'admin-notification';
+    notif.style.cssText = 'position:fixed;top:1rem;right:1rem;padding:1rem 1.5rem;border-radius:10px;font-family:var(--fuente);font-size:0.875rem;font-weight:500;z-index:9999;max-width:400px;box-shadow:0 10px 25px rgba(0,0,0,0.15);transition:all 0.3s;transform:translateX(120%);';
+    document.body.appendChild(notif);
+  }
+
+  if (tipo === 'error') {
+    notif.style.backgroundColor = '#ef4444';
+    notif.style.color = '#ffffff';
+  } else {
+    notif.style.backgroundColor = '#10b981';
+    notif.style.color = '#ffffff';
+  }
+
+  notif.textContent = mensaje;
+  notif.style.transform = 'translateX(0)';
+
+  setTimeout(() => {
+    notif.style.transform = 'translateX(120%)';
+    setTimeout(() => { notif.remove(); }, 300);
+  }, 4000);
 }
 
 // ─── Util ──────────────────────────────────
 
 function esc(s) {
   return String(s == null ? '' : s)
-    .replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/'/g, '&#39;')
+    .replace(/`/g, '&#96;');
 }
